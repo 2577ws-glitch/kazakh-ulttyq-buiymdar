@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Қазақтың ұлттық бұйымдары</title>
+<link rel="icon" href="images/interface/орнамент_угловой.png">
+<style>
+:root{--cream:#fff8ec;--gold:#d7a34b;--brown:#573b27;--terracotta:#9b593b;--green:#63866c;--panel:rgba(255,250,240,.94)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--brown);background:#ead8bb;min-height:100vh}
+button{font:inherit;cursor:pointer;border:0}
+#app{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
+.game{position:relative;width:min(100%,1280px);aspect-ratio:16/9;min-height:560px;max-height:calc(100vh - 36px);overflow:hidden;border:5px solid #b98743;border-radius:24px;background:linear-gradient(135deg,#f8e9d0,#d9b98a);box-shadow:0 18px 55px #543b2733}
+.bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.88}
+.bg:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#fff3df30,#fff9ed66)}
+.content{position:relative;z-index:2;height:100%;padding:3.2% 4.2%;display:flex;flex-direction:column}
+.fx{position:absolute;inset:0;z-index:20;pointer-events:none;overflow:hidden}
+.fx img{position:absolute;left:0;top:0;will-change:transform,opacity}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{font-weight:bold;letter-spacing:.06em;font-size:clamp(15px,2vw,25px);text-shadow:0 1px #fff}
+.top-right{display:flex;align-items:center;gap:8px}
+.pill{background:#fff8e8dd;border:1px solid #d4b57f;border-radius:999px;padding:8px 14px;font-size:clamp(12px,1.2vw,16px)}
+.icon-btn{width:clamp(38px,4.2vw,52px);height:clamp(38px,4.2vw,52px);border-radius:50%;background:#fff8e8ee;border:2px solid #d4b57f;padding:5px;display:inline-flex;align-items:center;justify-content:center;position:relative;transition:.15s;box-shadow:0 3px 0 #cbb38e}
+.icon-btn:hover{transform:translateY(-2px)}
+.icon-btn img{width:100%;height:100%;object-fit:contain}
+.icon-btn.off img{filter:grayscale(1);opacity:.45}
+.icon-btn.off:after{content:"";position:absolute;left:18%;right:18%;top:50%;height:3px;background:#9b593b;transform:rotate(-40deg);border-radius:3px}
+.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;min-height:0}
+h1{font-size:clamp(28px,4vw,56px);margin:0;text-shadow:0 2px #fff}
+h2{font-size:clamp(22px,3vw,38px);margin:0}
+p{font-size:clamp(17px,2vw,25px);line-height:1.35;margin:8px 0}
+.sub{font-size:clamp(14px,1.5vw,20px);opacity:.85}
+.btn{background:linear-gradient(#e9bd69,#c88b35);color:#fffdf5;padding:13px 28px;border-radius:16px;font-weight:bold;font-size:clamp(16px,1.7vw,23px);box-shadow:0 5px 0 #98652e,0 8px 18px #543b2733;transition:.18s}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.btn.ghost{background:#fff8e8;color:var(--brown);box-shadow:0 4px 0 #cbb38e}
+.btn.pulse{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+/* chest */
+.chest-stage{position:relative;width:min(40vh,34%,380px);aspect-ratio:1;flex:none;cursor:pointer}
+.chest-stage.small{width:min(30vh,26%,300px)}
+.intro .chest-stage.small{width:min(26vh,22%,260px)}
+.intro .intro-panel{padding:8px 20px}.intro .intro-panel p{margin:4px 0}
+.chest-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.chest-stage .glow{opacity:.55;transform:scale(1.05);animation:glow 2.2s ease-in-out infinite alternate}
+.chest-stage .body{z-index:2}.chest-stage .lid{z-index:3;transform-origin:50% 30%}
+.chest-stage.bob .rig{animation:bob 3s ease-in-out infinite}
+.rig{position:absolute;inset:0;filter:drop-shadow(0 14px 12px #3d291b44)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3%)}}
+@keyframes glow{from{opacity:.35;transform:scale(.98)}to{opacity:.85;transform:scale(1.1)}}
+.intro-panel,.text-panel{background:var(--panel);border:2px solid #d7b779;border-radius:20px;padding:14px 24px;max-width:850px;box-shadow:0 8px 25px #4b301b22}
+.divider{display:block;width:min(70%,320px);height:auto;margin:2px auto;aspect-ratio:2/1;object-fit:contain;max-height:46px}
+/* intro */
+.intro{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:8px;min-height:0;padding-top:6px}
+.slots{display:grid;grid-template-columns:repeat(var(--n,6),1fr);gap:10px;width:min(100%,900px)}
+.slot{display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:bold;font-size:clamp(11px,1.2vw,16px)}
+.slot .ph{width:100%;aspect-ratio:1;max-height:min(11vh,90px)}
+.slot span{opacity:0;transition:opacity .4s}
+.slot.landed span{opacity:1}
+.slot .ph img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 5px 5px #543b2733)}
+.intro-bottom{display:flex;flex-direction:column;align-items:center;gap:8px;padding-bottom:6px;transition:opacity .5s,transform .5s}
+.intro-bottom.wait{opacity:0;transform:translateY(12px);pointer-events:none}
+.intro{position:relative}.tap-hint{position:absolute;bottom:22%;left:0;right:0;font-size:clamp(14px,1.5vw,19px);font-weight:bold;animation:pulse 1.4s infinite}
+/* lesson */
+.lesson{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch;flex:1;min-height:0;padding:16px 0 10px}
+.object-panel{position:relative;background:#ead6b9dd;border:2px solid #d5b47c;border-radius:22px;overflow:hidden;min-height:0}
+.object-panel .halo{position:absolute;left:10%;right:10%;top:-4%;height:80%;width:80%;object-fit:contain;opacity:.6;animation:glow 2.4s ease-in-out infinite alternate}
+.object-panel .item{position:absolute;left:12%;width:76%;top:2%;height:66%;object-fit:contain;z-index:2;filter:drop-shadow(0 9px 8px #543b2744)}
+.object-panel .mini-body{position:absolute;left:30%;width:40%;bottom:-8%;height:auto;aspect-ratio:1;object-fit:contain;z-index:3}
+.object-panel .decor{position:absolute;right:3%;top:3%;width:20%;z-index:4;animation:sway 3s ease-in-out infinite;filter:drop-shadow(0 4px 4px #543b2733)}
+@keyframes sway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+.object-name{position:absolute;left:0;right:0;bottom:3%;z-index:4;font-size:clamp(20px,2.6vw,36px);font-weight:bold;text-shadow:0 2px #fff,0 0 8px #fff}
+.object-name{display:none}
+.text-panel{display:flex;flex-direction:column;justify-content:center;text-align:center;gap:6px;max-width:none}
+.text-panel h2{font-size:clamp(28px,3.6vw,48px);letter-spacing:.04em;color:var(--terracotta)}
+.text-panel .desc{font-size:clamp(19px,2.2vw,30px);margin:4px 0}
+.question{display:flex;align-items:center;gap:12px;text-align:left;background:linear-gradient(#fff3d6,#f6dfb0);border:2px solid #d39b3e;border-radius:16px;padding:10px 14px;font-weight:bold;font-size:clamp(18px,2vw,27px);margin:6px 0}
+.question .q{flex:none;width:1.8em;height:1.8em;border-radius:50%;background:var(--terracotta);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.1em;animation:pulse 1.6s infinite}
+.lesson-tools{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.footer{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.progress{display:flex;gap:7px;align-items:center}
+.dot{width:13px;height:13px;border-radius:50%;background:#d6c4a3;border:1px solid #a98a5d}
+.dot.active{background:#d39b3e;transform:scale(1.25)}
+.dot.done{background:#e3b968}
+.mode{display:flex;gap:8px;align-items:center}
+.mode button{border-radius:999px;padding:8px 12px;background:#fff8e8;color:var(--brown);border:1px solid #d5b47c;font-size:13px}
+.mode button.active{background:#66866a;color:white}
+/* quiz */
+.quiz-area{display:grid;grid-template-columns:repeat(var(--n,3),1fr);gap:16px;width:100%;max-width:950px}
+.choice{background:#fff9ed;border:3px solid #dfc18b;border-radius:18px;padding:12px;min-width:0;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--brown);transition:.15s}
+.choice:hover{transform:translateY(-4px);border-color:#c58c39}
+.choice img{width:100%;height:clamp(100px,20vh,190px);object-fit:contain}
+.choice strong{font-size:clamp(13px,1.5vw,19px)}
+.choice.correct{border-color:#5d9b67;background:#e8f5e6;animation:pop .5s}
+.choice.wrong{border-color:#d2a15a;animation:shake .45s}
+@keyframes pop{50%{transform:scale(1.08)}}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.feedback{min-height:30px;font-size:clamp(16px,1.7vw,22px);font-weight:bold}
+.feedback.ok{color:#3f7a4a}
+.stars-row{display:flex;gap:6px;justify-content:center;min-height:50px}
+.stars-row img{width:clamp(44px,5vw,64px);animation:pop .5s}
+.hidden{display:none!important}
+.ornament{position:absolute;z-index:1;width:84px;opacity:.85;pointer-events:none}
+.ornament.a{top:10px;left:10px}.ornament.b{top:10px;right:10px;transform:scaleX(-1)}
+.ornament.c{bottom:10px;right:10px;transform:rotate(180deg)}.ornament.d{bottom:10px;left:10px;transform:scaleY(-1)}
+.version{position:absolute;z-index:3;left:50%;bottom:6px;transform:translateX(-50%);font:11px/1 system-ui,sans-serif;color:#573b2788;letter-spacing:.08em;pointer-events:none}
+@media(max-aspect-ratio:3/2) and (min-width:761px){.game{aspect-ratio:4/3}}
+@media(max-width:760px){.game{min-height:640px;aspect-ratio:auto;max-height:none}.content{padding:16px}.lesson{grid-template-columns:1fr;grid-template-rows:260px auto}.text-panel{padding:12px}.quiz-area{gap:8px}.choice{padding:7px}.choice img{height:100px}.ornament{width:48px}.chest-stage{width:min(62vw,300px)}.chest-stage.small{width:min(48vw,220px)}.slots{grid-template-columns:repeat(3,1fr)}.slot .ph{max-height:16vw}.intro .chest-stage.small{width:min(48vw,220px)}.brand{font-size:13px}.pill{display:none}}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.01s!important}}
+</style>
+</head>
+<body>
+<div id="app">
+ <main class="game" id="game">
+  <div class="bg" id="background"></div>
+  <img class="ornament a hidden" alt=""><img class="ornament b hidden" alt=""><img class="ornament c hidden" alt=""><img class="ornament d hidden" alt="">
+  <div class="content" id="content"></div>
+  <div class="fx" id="fx"></div>
+  <div class="version" id="version">V1</div>
+ </main>
+</div>
+<script>
+const FALLBACK_DATA = {"game":{"title":"ҚАЗАҚТЫҢ ҰЛТТЫҚ БҰЙЫМДАРЫ","subtitle":"Танымдық ойын","language":"kk","age":"5+","description":"Қазақ халқының ұлттық бұйымдарымен танысуға арналған ойын.","mode":"combined","version":"V1"},"ui":{"start":"БАСТАУ","yes":"ӘРИНЕ!","next":"КЕЛЕСІ","back":"АРТҚА","beginQuiz":"ОЙЫНДЫ БАСТАУ","tryAgain":"ҚАЙТА КӨРУ","playAgain":"ҚАЙТА ОЙНАУ","finish":"АЯҚТАУ","correct":"ЖАРАЙСЫҢ!","incorrect":"Тағы бір рет байқап көр!","mute":"Дыбыс","teacherMode":"Тәрбиеші режимі","childMode":"Бала режимі","teacherHint":"Балалар ауызша жауап береді. Дайын болғанда «Келесі» батырмасын басыңыз.","childHint":"Дұрыс суретті таңда.","progress":"Зат","music":"Музыка","replay":"Қайталау","toQuiz":"ОЙЫНҒА ӨТУ","nextTask":"КЕЛЕСІ ТАПСЫРМА","results":"ҚОРЫТЫНДЫ","task":"ТАПСЫРМА","menuPill":"ТАНЫМДЫҚ ОЙЫН","introPill":"ҚОШ КЕЛДІҢДЕР!","quizPill":"БІЛІМІМІЗДІ ТЕКСЕРЕЙІК!","finalPill":"ОЙЫН АЯҚТАЛДЫ","quizIntroTitle":"ЖАРАЙСЫҢДАР!","quizIntroText":"Енді ұлттық бұйымдарды қаншалықты жақсы есте сақтағанымызды тексерейік!","openChest":"Сандықты ашу үшін бас!"},"intro":{"text":"Балалар, қараңдаршы! Бізге бір әдемі сиқырлы сандық келіпті. Ішінде не бар екенін бірге көрейік пе?","button":"ӘРИНЕ!"},"items":[{"id":"urshyk","name":"ҰРШЫҚ","description":"Ұршық – жүн иіруге арналған құрал.","question":"Балалар, мынау не?","image":"images/objects/уршык.png","short":"Жүн иіруге арналған құрал."},{"id":"zhun","name":"ЖҮН","description":"Жүн – қойдың жүнінен алынады.","question":"Жүн неден алынады?","image":"images/objects/жун.png","short":"Қойдың жүнінен алынады.","decor":"yarn"},{"id":"kiiz","name":"КИІЗ","description":"Киіз – жүннен жасалады.","question":"Киіз неден жасалады?","image":"images/objects/киіз.png","short":"Жүннен жасалады.","decor":"rolledFelt"},{"id":"kiilem","name":"КІЛЕМ","description":"Кілем – үйді сәндейтін әдемі бұйым.","question":"Кілем қандай бұйым?","image":"images/objects/кілем.png","short":"Үйді сәндейтін әдемі бұйым.","decor":"rolledCarpet"},{"id":"kamshy","name":"ҚАМШЫ","description":"Қамшы – қазақ халқының ұлттық бұйымы.","question":"Мына бұйым қалай аталады?","image":"images/objects/камшы.png","short":"Қазақ халқының ұлттық бұйымы."},{"id":"oyu","name":"ОЮ-ӨРНЕК","description":"Ою-өрнек – бұйымдарды әшекейлейді.","question":"Ою-өрнек не үшін қажет?","image":"images/objects/ою_орнек.png","short":"Бұйымдарды әшекейлейді."}],"quiz":[{"id":"find-object","title":"ДҰРЫСЫН ТАП!","instruction":"Қайсысы кілем?","question":"Қайсысы кілем?","answer":"kiilem","choices":[{"id":"zhun","label":"ЖҮН","image":"images/objects/жун.png"},{"id":"kiilem","label":"КІЛЕМ","image":"images/objects/кілем.png"},{"id":"kamshy","label":"ҚАМШЫ","image":"images/objects/камшы.png"}]},{"id":"purpose","title":"НЕ ҮШІН ҚАЖЕТ?","instruction":"Жүнді иіруге не қажет?","question":"Жүнді иіруге не қажет?","answer":"urshyk","choices":[{"id":"urshyk","label":"ҰРШЫҚ","image":"images/objects/уршык.png"},{"id":"kiiz","label":"КИІЗ","image":"images/objects/киіз.png"},{"id":"oyu","label":"ОЮ-ӨРНЕК","image":"images/objects/ою_орнек.png"}]},{"id":"odd-one","title":"АРТЫҚ ЗАТТЫ ТАП!","instruction":"Қай зат ұлттық бұйымдарға жатпайды?","question":"Қай зат ұлттық бұйымдарға жатпайды?","answer":"extra","choices":[{"id":"kiilem","label":"КІЛЕМ","image":"images/objects/кілем.png"},{"id":"extra","label":"ОЙЫНШЫҚ КӨЛІК","image":"images/objects/лишний_предмет.png"},{"id":"kamshy","label":"ҚАМШЫ","image":"images/objects/камшы.png"}]}],"final":{"title":"ЖАРАЙСЫҢДАР, БАЛАЛАР!","text":"Бүгін біз қазақ халқының ұлттық бұйымдарымен таныстық. Сендер өте ақылдысыңдар!","button":"ҚАЙТА ОЙНАУ"},"assets":{"background":"images/backgrounds/фон_юрта.jpg","closedChest":"images/objects/сундук_закрытый.png","openChest":"images/objects/сундук_открытый.png","chestGlow":"images/effects/сундук_свечение.png","stars":"images/effects/звезды.png","confetti":"images/effects/конфетти.png","cornerOrnament":"images/interface/орнамент_угловой.png","dividerOrnament":"images/interface/орнамент_разделитель.png","soundIcon":"images/interface/иконка_звук.png","musicIcon":"images/interface/иконка_музыка.png","replayIcon":"images/interface/иконка_повтор.png","yarn":"images/objects/шерсть_клубок.png","rolledFelt":"images/objects/войлок_свернутый.png","rolledCarpet":"images/objects/ковер_свернутый.png","chestBody":"images/objects/сундук_корпус.png","chestLid":"images/objects/сундук_крышка.png"}};
+let GAME = FALLBACK_DATA;
+const $ = s => document.querySelector(s);
+const content = $('#content'), fx = $('#fx'), gameEl = $('#game');
+let screen='menu', itemIndex=0, quizIndex=0, mode='teacher', answered=false, quizStars=0;
+let sfxOn = true, musicOn = false, introPlayed = false, timers = [];
+window.__broken = [];
+
+/* ---------- data ---------- */
+async function loadData(){
+  try{
+    if(location.protocol !== 'file:'){
+      const r = await fetch('data.json', {cache:'no-cache'});
+      if(r.ok) GAME = await r.json();
+    }
+  }catch(e){ /* embedded fallback stays */ }
+  const A = GAME.assets;
+  $('#background').style.backgroundImage = `url("${A.background}")`;
+  document.querySelectorAll('.ornament').forEach(o=>{o.src=A.cornerOrnament;o.classList.remove('hidden')});
+  $('#version').textContent = GAME.game.version || 'V1';
+  // preload everything
+  const all = new Set(Object.values(A).concat(GAME.items.map(i=>i.image)).concat(GAME.quiz.flatMap(q=>q.choices.map(c=>c.image))));
+  all.forEach(src=>{const i=new Image();i.onerror=()=>window.__broken.push(src);i.src=src;});
+  render();
+}
+function img(path, cls='', alt=''){ return `<img class="${cls}" src="${path}" alt="${alt}" draggable="false" onerror="window.__broken.push(this.getAttribute('src'));this.style.visibility='hidden'">`; }
+function iconBtn(id, icon, title, off, onclick){ return `<button class="icon-btn ${off?'off':''}" id="${id}" title="${title}" aria-label="${title}" onclick="${onclick}">${img(icon,'',title)}</button>`; }
+function header(right=''){
+  const A=GAME.assets, U=GAME.ui;
+  return `<div class="top"><div class="brand">${GAME.game.title}</div><div class="top-right">${right?`<div class="pill">${right}</div>`:''}
+   ${iconBtn('sfxBtn',A.soundIcon,U.mute,!sfxOn,'toggleSfx()')}${iconBtn('musicBtn',A.musicIcon,U.music,!musicOn,'toggleMusic()')}</div></div>`;
+}
+function footer(left='', right=''){ return `<div class="footer"><div>${left}</div><div>${right}</div></div>`; }
+function chestStage(cls='', open=false){
+  const A=GAME.assets;
+  return `<div class="chest-stage ${cls}" id="chest">${img(A.chestGlow,'glow')}<div class="rig" id="rig">${img(open?A.openChest:A.chestBody,'body','Сиқырлы сандық')}${open?'':img(A.chestLid,'lid')}</div></div>`;
+}
+function clearTimers(){ timers.forEach(clearTimeout); timers=[]; }
+function later(fn, ms){ timers.push(setTimeout(fn, ms)); }
+
+/* ---------- screens ---------- */
+function render(){
+  clearTimers(); fx.innerHTML='';
+  ({menu:renderMenu,intro:renderIntro,lesson:renderLesson,quizIntro:renderQuizIntro,quiz:renderQuiz,final:renderFinal})[screen]();
+}
+function renderMenu(){
+  const U=GAME.ui;
+  content.innerHTML = `${header(U.menuPill)}<section class="center">
+   <h1>${GAME.game.title}</h1><div class="sub">${GAME.game.subtitle}</div>
+   ${chestStage('bob')}
+   <button class="btn pulse" id="startBtn" onclick="go('intro')">${U.start}</button>
+  </section>${footer('',`<span class="sub">${GAME.game.age}</span>`)}`;
+  $('#chest').onclick = ()=>go('intro');
+}
+function renderIntro(){
+  const U=GAME.ui, n=GAME.items.length;
+  const slots = GAME.items.map((it,i)=>`<div class="slot" data-i="${i}"><div class="ph"></div><span>${it.name}</span></div>`).join('');
+  content.innerHTML = `${header(U.introPill)}<section class="intro">
+   <div class="slots" style="--n:${n}">${slots}</div>
+   ${chestStage('small bob')}
+   <div class="tap-hint" id="tapHint">${U.openChest}</div>
+   <div class="intro-bottom wait" id="introBottom">
+     <div class="intro-panel"><p>${GAME.intro.text}</p></div>
+     <button class="btn pulse" id="yesBtn" onclick="startLessons()">${GAME.intro.button}</button>
+   </div>
+  </section>${footer(`<button class="btn ghost" onclick="go('menu')">${U.back}</button>`, iconBtn('replayBtn',GAME.assets.replayIcon,U.replay,false,"go('intro')"))}`;
+  let started=false;
+  const start=()=>{ if(started) return; started=true; $('#tapHint').classList.add('hidden'); openChest(); };
+  $('#chest').onclick = start;
+  later(start, 1200); // opens by itself too
+}
+function openChest(){
+  const stage=$('#chest'), rig=$('#rig'), lid=stage.querySelector('.lid'), glow=stage.querySelector('.glow'), body=stage.querySelector('.body');
+  stage.classList.remove('bob');
+  rig.animate([{transform:'rotate(0)'},{transform:'rotate(-2.5deg)'},{transform:'rotate(2.5deg)'},{transform:'rotate(-2deg)'},{transform:'rotate(1.5deg)'},{transform:'rotate(0)'}],{duration:600,easing:'ease-in-out'});
+  sfx('rattle');
+  later(()=>{
+    sfx('chime');
+    glow.style.animation='none';
+    glow.animate([{opacity:.4,transform:'scale(.8)'},{opacity:1,transform:'scale(1.35)'},{opacity:.8,transform:'scale(1.15)'}],{duration:1400,easing:'ease-out',fill:'forwards'});
+    const a = lid.animate([
+      {transform:'translate(0,0) rotate(0)',offset:0},
+      {transform:'translate(0,-16%) rotate(-4deg)',offset:.35},
+      {transform:'translate(26%,-20%) rotate(10deg)',offset:.7},
+      {transform:'translate(44%,-2%) rotate(22deg) scale(.92)',offset:1}
+    ],{duration:1300,easing:'cubic-bezier(.34,1.2,.5,1)',fill:'forwards'});
+    later(()=>{ lid.style.zIndex=1; }, 900); // slide behind the body, leaning on its side
+    later(()=>starBurst(stage, .5, .32, 9), 450);
+  }, 600);
+  // items fly out one by one
+  const slots=[...document.querySelectorAll('.slot')];
+  GAME.items.forEach((it,i)=> later(()=>flyItem(it, stage, slots[i]), 1700 + i*560));
+  later(()=>{ $('#introBottom').classList.remove('wait'); }, 1700 + GAME.items.length*560 + 300);
+}
+function rel(el){ const g=gameEl.getBoundingClientRect(), r=el.getBoundingClientRect(); return {x:r.left-g.left,y:r.top-g.top,w:r.width,h:r.height}; }
+function flyItem(it, stage, slot){
+  if(!slot || !document.body.contains(stage)) return;
+  const s=rel(stage), t=rel(slot.querySelector('.ph'));
+  const size=Math.min(t.w,t.h);
+  const el=new Image(); el.src=it.image; el.style.width=size+'px'; el.style.height=size+'px';
+  fx.appendChild(el);
+  const sx=s.x+s.w*.5-size/2, sy=s.y+s.h*.33-size/2;
+  const tx=t.x+(t.w-size)/2, ty=t.y+(t.h-size)/2;
+  const mx=(sx+tx)/2, my=Math.min(sy,ty)-s.h*.25;
+  sfx('pop');
+  el.animate([
+    {transform:`translate(${sx}px,${sy}px) scale(.15) rotate(-20deg)`,opacity:0},
+    {transform:`translate(${sx}px,${sy-s.h*.18}px) scale(.7) rotate(-8deg)`,opacity:1,offset:.25},
+    {transform:`translate(${mx}px,${my}px) scale(1.25) rotate(8deg)`,opacity:1,offset:.6},
+    {transform:`translate(${tx}px,${ty}px) scale(1) rotate(0)`,opacity:1}
+  ],{duration:900,easing:'cubic-bezier(.3,.7,.4,1)',fill:'forwards'}).onfinish=()=>{
+    el.remove(); slot.querySelector('.ph').innerHTML=img(it.image,'',it.name); slot.classList.add('landed');
+    slot.animate([{transform:'scale(1.15)'},{transform:'scale(1)'}],{duration:300});
+  };
+}
+function renderLesson(){
+  const U=GAME.ui, A=GAME.assets, item=GAME.items[itemIndex], n=GAME.items.length;
+  const dots=GAME.items.map((x,i)=>`<span class="dot ${i===itemIndex?'active':i<itemIndex?'done':''}"></span>`).join('');
+  const decor=item.decor&&A[item.decor]?img(A[item.decor],'decor',''):'';
+  content.innerHTML = `${header(`${U.progress} ${itemIndex+1} / ${n}`)}
+  <section class="lesson">
+   <div class="object-panel" id="objPanel">${img(A.chestGlow,'halo')}${img(item.image,'item',item.name)}${img(A.chestBody,'mini-body','')}${decor}</div>
+   <div class="text-panel">
+    <h2>${item.name}</h2>${img(A.dividerOrnament,'divider','')}
+    <p class="desc">${item.description}</p>
+    <div class="question"><span class="q">?</span><span>${item.question}</span></div>
+    <div class="sub">${mode==='teacher'?U.teacherHint:U.childHint}</div>
+    <div class="lesson-tools"><div class="mode"><button class="${mode==='teacher'?'active':''}" onclick="setMode('teacher')">${U.teacherMode}</button><button class="${mode==='child'?'active':''}" onclick="setMode('child')">${U.childMode}</button></div>
+    ${iconBtn('replayBtn',A.replayIcon,U.replay,false,'riseItem()')}</div>
+   </div>
+  </section>
+  ${footer(`<div class="progress">${dots}</div>`,`<button class="btn" id="nextBtn" onclick="nextItem()">${itemIndex===n-1?U.toQuiz:U.next} →</button>`)}`;
+  riseItem();
+}
+function riseItem(){
+  const p=$('#objPanel'); if(!p) return;
+  const it=p.querySelector('.item');
+  sfx('pop');
+  it.animate([
+    {transform:'translateY(55%) scale(.3)',opacity:0},
+    {transform:'translateY(-7%) scale(1.06)',opacity:1,offset:.65},
+    {transform:'translateY(0) scale(1)',opacity:1}
+  ],{duration:1000,easing:'cubic-bezier(.3,.8,.4,1)'});
+  later(()=>{ const r=rel(p); burstAt(GAME.assets.stars, r.x+r.w*.5, r.y+r.h*.35, 5, r.w*.35, .12*r.w); }, 600);
+}
+function renderQuizIntro(){
+  const U=GAME.ui;
+  content.innerHTML = `${header(U.quizPill)}<section class="center">
+   ${chestStage('small bob', true)}
+   <div class="intro-panel"><h2>${U.quizIntroTitle}</h2>${img(GAME.assets.dividerOrnament,'divider','')}<p>${U.quizIntroText}</p></div>
+   <button class="btn pulse" id="beginQuizBtn" onclick="quizIndex=0;quizStars=0;go('quiz')">${U.beginQuiz}</button>
+  </section>`;
+}
+function renderQuiz(){
+  const U=GAME.ui, q=GAME.quiz[quizIndex], n=GAME.quiz.length; answered=false;
+  const choices=q.choices.map(c=>`<button class="choice" data-id="${c.id}" onclick="choose('${c.id}',this)">${img(c.image,'',c.label)}<strong>${c.label}</strong></button>`).join('');
+  const stars=Array.from({length:quizStars},()=>img(GAME.assets.stars,'','')).join('');
+  content.innerHTML = `${header(`${U.task} ${quizIndex+1} / ${n}`)}
+  <section class="center" style="gap:10px">
+   <h2>${q.title}</h2><p style="margin:0">${q.question}</p>
+   <div class="quiz-area" style="--n:${q.choices.length}">${choices}</div>
+   <div class="feedback" id="feedback" aria-live="polite"></div>
+   <div class="stars-row" id="starsRow">${stars}</div>
+   <button class="btn hidden" id="quizNext" onclick="nextQuiz()">${quizIndex===n-1?U.results:U.nextTask} →</button>
+  </section>`;
+}
+function choose(id,button){
+  if(answered) return;
+  const q=GAME.quiz[quizIndex], fb=$('#feedback');
+  if(id===q.answer){
+    answered=true; quizStars++; button.classList.add('correct');
+    fb.textContent=GAME.ui.correct; fb.className='feedback ok';
+    document.querySelectorAll('.choice').forEach(b=>b.disabled=true);
+    $('#quizNext').classList.remove('hidden');
+    $('#starsRow').insertAdjacentHTML('beforeend', img(GAME.assets.stars,'',''));
+    sfx('success');
+    const r=rel(button);
+    confetti(r.x+r.w/2, r.y+r.h*.4, 14);
+    burstAt(GAME.assets.stars, r.x+r.w/2, r.y+r.h*.4, 6, r.w*.6, r.w*.25);
+  }else{
+    button.classList.remove('wrong'); void button.offsetWidth; button.classList.add('wrong');
+    fb.textContent=GAME.ui.incorrect; fb.className='feedback';
+    sfx('wrong');
+    setTimeout(()=>button.classList.remove('wrong'),650);
+  }
+}
+function nextQuiz(){ if(quizIndex<GAME.quiz.length-1){quizIndex++;renderQuiz()}else go('final'); }
+function renderFinal(){
+  const U=GAME.ui;
+  content.innerHTML = `${header(U.finalPill)}<section class="center">
+   ${chestStage('small bob', true)}
+   <h1>${GAME.final.title}</h1>
+   <div class="intro-panel"><p>${GAME.final.text}</p></div>
+   <button class="btn pulse" id="playAgainBtn" onclick="restart()">${GAME.final.button}</button>
+  </section>${footer('',`<button class="btn ghost" onclick="go('menu')">${U.finish}</button>`)}`;
+  const st=$('#chest');
+  sfx('fanfare');
+  const g=rel(gameEl);
+  const rain=k=>{ confetti(g.w*(.15+Math.random()*.7), g.h*.05, 10, true); if(k>0) later(()=>rain(k-1), 700); };
+  rain(5);
+  later(()=>{ const r=rel(st); starBurst(st,.5,.3,10); }, 300);
+}
+
+/* ---------- effects ---------- */
+function burstAt(src, cx, cy, count, radius, size){
+  for(let i=0;i<count;i++){
+    const el=new Image(); el.src=src; const s=size*(.7+Math.random()*.6);
+    el.style.width=el.style.height=s+'px'; fx.appendChild(el);
+    const ang=(-Math.PI/2)+(Math.random()-.5)*Math.PI*1.4, d=radius*(.6+Math.random()*.6);
+    const x0=cx-s/2, y0=cy-s/2, x1=x0+Math.cos(ang)*d, y1=y0+Math.sin(ang)*d;
+    const rot=(Math.random()-.5)*120;
+    el.animate([{transform:`translate(${x0}px,${y0}px) scale(.2) rotate(0)`,opacity:0},
+      {transform:`translate(${(x0+x1)/2}px,${(y0+y1)/2}px) scale(1) rotate(${rot/2}deg)`,opacity:1,offset:.35},
+      {transform:`translate(${x1}px,${y1}px) scale(.8) rotate(${rot}deg)`,opacity:0}],
+      {duration:1100+Math.random()*500,easing:'ease-out',fill:'forwards'}).onfinish=()=>el.remove();
+  }
+}
+function starBurst(stage, fx_, fy_, count){
+  const r=rel(stage); burstAt(GAME.assets.stars, r.x+r.w*fx_, r.y+r.h*fy_, count, r.w*.85, r.w*.42);
+}
+function confetti(cx, cy, count, rain=false){
+  const g=rel(gameEl);
+  for(let i=0;i<count;i++){
+    const el=new Image(); el.src=GAME.assets.confetti; const s=g.w*(.06+Math.random()*.08);
+    el.style.width=el.style.height=s+'px'; fx.appendChild(el);
+    const x0=cx-s/2+(rain?(Math.random()-.5)*g.w*.3:0), y0=cy-s/2;
+    const vx=(Math.random()-.5)*g.w*(rain?.2:.5), up=rain?0:-(g.h*(.15+Math.random()*.25));
+    const x1=x0+vx, y1=y0+g.h*(.7+Math.random()*.4), rot=(Math.random()-.5)*720;
+    el.animate([{transform:`translate(${x0}px,${y0}px) rotate(0) scale(.4)`,opacity:1},
+      {transform:`translate(${x0+vx*.4}px,${y0+up}px) rotate(${rot*.3}deg) scale(1)`,opacity:1,offset:.3},
+      {transform:`translate(${x1}px,${y1}px) rotate(${rot}deg) scale(.9)`,opacity:0}],
+      {duration:1800+Math.random()*900,easing:'cubic-bezier(.2,.6,.5,1)',fill:'forwards'}).onfinish=()=>el.remove();
+  }
+}
+
+/* ---------- sound (WebAudio, no files) ---------- */
+let AC=null, master=null, musicTimer=null, musicStep=0;
+function ac(){
+  if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); master=AC.createGain(); master.gain.value=.5; master.connect(AC.destination);}catch(e){return null;} }
+  if(AC.state==='suspended') AC.resume();
+  return AC;
+}
+function tone(f, t0, dur, type='triangle', vol=.25, f2=null){
+  const c=ac(); if(!c) return;
+  const o=c.createOscillator(), g=c.createGain(), t=c.currentTime+t0;
+  o.type=type; o.frequency.setValueAtTime(f,t); if(f2) o.frequency.exponentialRampToValueAtTime(f2,t+dur);
+  g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+.015); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.connect(g); g.connect(master); o.start(t); o.stop(t+dur+.05);
+}
+function sfx(name){
+  if(!sfxOn) return;
+  const S={
+    rattle:()=>{[0,.1,.2,.3].forEach((t,i)=>tone(160+i*20,t,.08,'square',.05));},
+    chime:()=>{[523,659,784,1047,1319].forEach((f,i)=>tone(f,i*.09,.7,'triangle',.18));},
+    pop:()=>{tone(380,0,.16,'sine',.25,950);},
+    success:()=>{tone(784,0,.25,'triangle',.22);tone(1047,.12,.45,'triangle',.22);tone(1568,.24,.5,'sine',.12);},
+    wrong:()=>{tone(220,0,.22,'sine',.18,150);},
+    fanfare:()=>{[523,659,784,1047,784,1047].forEach((f,i)=>tone(f,i*.14,.5,'triangle',.18));}
+  };
+  S[name]&&S[name]();
+}
+const MELODY=[392,440,523,440,587,523,440,392, 330,392,440,523,440,392,330,294];
+function startMusic(){ if(!ac()) return; stopMusic(); musicTimer=setInterval(()=>{ const f=MELODY[musicStep++%MELODY.length]; tone(f,0,.42,'triangle',.06); if(musicStep%4===1) tone(f/2,0,.8,'sine',.05); },380); }
+function stopMusic(){ if(musicTimer) clearInterval(musicTimer); musicTimer=null; }
+function toggleSfx(){ sfxOn=!sfxOn; document.getElementById('sfxBtn')?.classList.toggle('off',!sfxOn); if(sfxOn) sfx('pop'); }
+function toggleMusic(){ musicOn=!musicOn; document.getElementById('musicBtn')?.classList.toggle('off',!musicOn); musicOn?startMusic():stopMusic(); }
+
+/* ---------- navigation ---------- */
+function go(next){screen=next;render()}
+function startLessons(){itemIndex=0;go('lesson')}
+function nextItem(){if(itemIndex<GAME.items.length-1){itemIndex++;renderLesson()}else go('quizIntro')}
+function setMode(next){mode=next;renderLesson()}
+function restart(){itemIndex=0;quizIndex=0;quizStars=0;go('menu')}
+document.addEventListener('pointerdown',()=>ac(),{once:true});
+loadData();
+</script>
+</body>
+</html>
